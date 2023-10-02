@@ -26,17 +26,30 @@ function getFeaturedWeather(location) {
 function displayWeather(data, location) {
   weatherOutput.innerHTML = '';
 
-  const forecastList = data.list;
-  let dayCounter = 1; 
-  let dailyTempSum = 0;
-  let dailyWindSum = 0;
-  let dailyHumiditySum = 0;
+  const weatherEmojiOptions = {
+    'clear sky': '☀️',
+    'few clouds': '🌤️',
+    'scattered clouds': '🌥️',
+    'broken clouds': '☁️',
+    'overcast clouds': '☁️',
+    'light rain': '🌦️',
+    'moderate rain': '🌧️',
+    'heavy rain': '🌧️',
+    'thunderstorm': '⛈️',
+    'snow': '❄️',
+    'mist': '🌫️',
+  };
 
-  for (let i = 0; i < forecastList.length; i++) {
+  const forecastList = data.list;
+  var dayCounter = 1; 
+  var dailyTempSum = 0;
+  var dailyWindSum = 0;
+  var dailyHumiditySum = 0;
+
+  for (var i = 0; i < forecastList.length; i++) {
     const forecast = forecastList[i];
     const date = new Date(forecast.dt * 1000);
     const dayKey = date.toLocaleDateString('en-US', { weekday: 'long' });
-
     dailyTempSum += forecast.main.temp;
     dailyWindSum += forecast.wind.speed;
     dailyHumiditySum += forecast.main.humidity;
@@ -45,11 +58,14 @@ function displayWeather(data, location) {
       const avgTemp = Math.round(dailyTempSum / 8);
       const avgWind = Math.round(dailyWindSum / 8);
       const avgHumidity = Math.round(dailyHumiditySum / 8);
+      const description = forecast.weather[0].description;
+      const weatherEmoji = weatherEmojiOptions[description] || '❓';
 
       const card = document.createElement('div');
       card.classList.add('weather-card');
       card.innerHTML = `
         <h3>${location} - ${dayKey}</h3>
+        <p>${weatherEmoji} ${description}</p>
         <p>Average Temperature: ${avgTemp}°C</p>
         <p>Average Wind Speed: ${avgWind} m/s</p>
         <p>Average Humidity: ${avgHumidity}%</p>
