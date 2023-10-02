@@ -1,5 +1,5 @@
 // script.js
-const apiKey = '4c7a362b0a4aff15220ebae50b227cf0'; // Replace with your OpenWeather API key
+const apiKey = '4c7a362b0a4aff15220ebae50b227cf0'; 
 const weatherForm = document.getElementById('weather-form');
 const locationInput = document.getElementById('location-input');
 const weatherOutput = document.getElementById('weather-output');
