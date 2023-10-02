@@ -24,15 +24,10 @@ function getFeaturedWeather(location) {
 };
 
 function displayWeather(data, location) {
-  // Clear previous weather data
   weatherOutput.innerHTML = '';
 
-  // Create an object to store daily aggregated data
-  const dailyData = {};
-
-  // Extract and aggregate the data for each day
   const forecastList = data.list;
-  let dayCounter = 1; // Keep track of days
+  let dayCounter = 1; 
   let dailyTempSum = 0;
   let dailyWindSum = 0;
   let dailyHumiditySum = 0;
@@ -42,18 +37,15 @@ function displayWeather(data, location) {
     const date = new Date(forecast.dt * 1000);
     const dayKey = date.toLocaleDateString('en-US', { weekday: 'long' });
 
-    // Accumulate data for the day
     dailyTempSum += forecast.main.temp;
     dailyWindSum += forecast.wind.speed;
     dailyHumiditySum += forecast.main.humidity;
 
-    // If it's the 8th iteration, calculate and display the average
     if (dayCounter % 8 === 0) {
       const avgTemp = Math.round(dailyTempSum / 8);
       const avgWind = Math.round(dailyWindSum / 8);
       const avgHumidity = Math.round(dailyHumiditySum / 8);
 
-      // Create a card for the day's averages
       const card = document.createElement('div');
       card.classList.add('weather-card');
       card.innerHTML = `
@@ -65,19 +57,15 @@ function displayWeather(data, location) {
 
       weatherOutput.appendChild(card);
 
-      // Reset daily data for the next day
       dailyTempSum = 0;
       dailyWindSum = 0;
       dailyHumiditySum = 0;
 
-      // Increment the day counter
       dayCounter++;
     } else {
-      // Increment the day counter for each iteration
       dayCounter++;
     }
 
-    // Break the loop if 5 days' worth of data have been displayed
     if (dayCounter > 40) {
       break;
     }
