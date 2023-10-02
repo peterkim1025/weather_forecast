@@ -59,7 +59,7 @@ function displayWeather(data, location) {
       const avgWind = Math.round(dailyWindSum / 8);
       const avgHumidity = Math.round(dailyHumiditySum / 8);
       const description = forecast.weather[0].description;
-      const weatherEmoji = weatherEmojiOptions[description] || '❓';
+      const weatherEmoji = weatherEmojiOptions[description];
 
       const card = document.createElement('div');
       card.classList.add('weather-card');
