@@ -1,8 +1,24 @@
-// script.js
 const apiKey = '4c7a362b0a4aff15220ebae50b227cf0'; 
 const weatherForm = document.getElementById('weather-form');
 const locationInput = document.getElementById('location-input');
 const weatherOutput = document.getElementById('weather-output');
+const currentWeatherOutput = document.getElementById('current-weather-output');
+const city = document.getElementById('city');
+
+var cityButtonClickHandler = function (event) {
+  var cityName = event.target.getAttribute('city');
+  if (cityName) {
+    getFeaturedWeather(cityName); 
+    weatherOutput.textContent = ''; 
+    currentWeatherOutput.textContent = '';
+  }
+};
+
+const cityButtons = document.querySelectorAll('.btn');
+
+cityButtons.forEach((button) => {
+  button.addEventListener('click', cityButtonClickHandler);
+});
 
 weatherForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -25,6 +41,7 @@ function getFeaturedWeather(location) {
 
 function displayWeather(data, location) {
   weatherOutput.innerHTML = '';
+  currentWeatherOutput.innerHTML = ''; 
 
   const weatherEmojiOptions = {
     'clear sky': '☀️',
@@ -41,7 +58,7 @@ function displayWeather(data, location) {
   };
 
   const forecastList = data.list;
-  var dayCounter = 1; 
+  var dayCounter = 1;
   var dailyTempSum = 0;
   var dailyWindSum = 0;
   var dailyHumiditySum = 0;
@@ -54,33 +71,55 @@ function displayWeather(data, location) {
     dailyWindSum += forecast.wind.speed;
     dailyHumiditySum += forecast.main.humidity;
 
-    if (dayCounter % 8 === 0) {
+    if (dayCounter === 1) {
       const avgTemp = Math.round(dailyTempSum / 8);
       const avgWind = Math.round(dailyWindSum / 8);
       const avgHumidity = Math.round(dailyHumiditySum / 8);
       const description = forecast.weather[0].description;
       const weatherEmoji = weatherEmojiOptions[description];
 
-      const card = document.createElement('div');
-      card.classList.add('weather-card');
-      card.innerHTML = `
-        <h3>${location} - ${dayKey}</h3>
+      const currentWeatherBox = document.createElement('div');
+      currentWeatherBox.classList.add('current-weather-box');
+      currentWeatherBox.innerHTML = `
+        <h3>Current Weather: ${location}</h3>
         <p>${weatherEmoji} ${description}</p>
         <p>Average Temperature: ${avgTemp}°C</p>
         <p>Average Wind Speed: ${avgWind} m/s</p>
         <p>Average Humidity: ${avgHumidity}%</p>
       `;
 
-      weatherOutput.appendChild(card);
+      currentWeatherOutput.appendChild(currentWeatherBox);
 
       dailyTempSum = 0;
       dailyWindSum = 0;
       dailyHumiditySum = 0;
-
-      dayCounter++;
     } else {
-      dayCounter++;
+      if (dayCounter % 8 === 0) {
+        const avgTemp = Math.round(dailyTempSum / 8);
+        const avgWind = Math.round(dailyWindSum / 8);
+        const avgHumidity = Math.round(dailyHumiditySum / 8);
+        const description = forecast.weather[0].description;
+        const weatherEmoji = weatherEmojiOptions[description];
+
+        const card = document.createElement('div');
+        card.classList.add('weather-card');
+        card.innerHTML = `
+          <h3>${location} - ${dayKey}</h3>
+          <p>${weatherEmoji} ${description}</p>
+          <p>Average Temperature: ${avgTemp}°C</p>
+          <p>Average Wind Speed: ${avgWind} m/s</p>
+          <p>Average Humidity: ${avgHumidity}%</p>
+        `;
+
+        weatherOutput.appendChild(card);
+
+        dailyTempSum = 0;
+        dailyWindSum = 0;
+        dailyHumiditySum = 0;
+      }
     }
+
+    dayCounter++;
 
     if (dayCounter > 40) {
       break;

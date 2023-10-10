@@ -11,18 +11,18 @@ body {
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  text-align: center; 
 }
 
 h1 {
-  text-align: center;
   color: #333;
 }
 
 form {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column; 
   margin-top: 20px;
+  align-items: center; 
 }
 
 input[type="text"] {
@@ -31,6 +31,7 @@ input[type="text"] {
   border: 1px solid #ccc;
   border-radius: 5px;
   outline: none;
+  margin-bottom: 10px; 
 }
 
 button {
@@ -40,6 +41,7 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-bottom: 10px; 
 }
 
 button:hover {
@@ -48,4 +50,18 @@ button:hover {
 
 #weather-output {
   margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.btn:hover {
+  background-color: #0056b3;
 }
